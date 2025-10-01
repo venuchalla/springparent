@@ -172,13 +172,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-<distributionManagement>
-   <repository>
-     <id>github</id>
-     <name>GitHub OWNER Apache Maven Packages</name>
-     <url>https://maven.pkg.github.com/venuchalla/parent</url>
-   </repository>
-</distributionManagement>
 	<build>
 		<plugins>
 			<plugin>
