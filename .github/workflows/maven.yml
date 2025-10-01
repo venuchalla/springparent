@@ -38,10 +38,3 @@ jobs:
       # (Optional) Run only tests
       - name: Run tests
         run: mvn test
-
-      # Upload JAR artifact for download
-      - name: Upload JAR
-        uses: actions/upload-artifact@v4
-        with:
-          name: spring-boot-app
-          path: target/*.pom
