@@ -22,7 +22,10 @@ jobs:
           distribution: temurin
           java-version: '19'
           server-id: github
-          settings-path:  ${{ github.workspace }}
+
+
+      - name: Show settings.xml
+        run: cat ~/.m2/settings.xml
 
       - name: Build & Deploy
         run: mvn -X clean deploy
