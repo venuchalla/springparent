@@ -1,4 +1,4 @@
-package com.example.parent;
+package com.example.springparent;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
