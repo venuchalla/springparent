@@ -33,6 +33,11 @@
 			<name>GitHub Packages</name>
 			<url>https://maven.pkg.github.com/venuchalla/springparent</url>
 		</repository>
+		<snapshotRepository>
+			<id>github</id>
+			<name>GitHub Packages Snapshots</name>
+			<url>https://maven.pkg.github.com/venuchalla/springparent</url>
+		</snapshotRepository>
 	</distributionManagement>
 	<properties>
 		<java.version>19</java.version>
