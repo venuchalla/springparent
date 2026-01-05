@@ -22,7 +22,7 @@ jobs:
           distribution: temurin
           java-version: '19'
           server-id: github
-          settings-path: ${{ env.HOME }}/.m2
+          settings-path:  ${{ github.workspace }}
 
       - name: Build & Deploy
         run: mvn -X clean deploy
