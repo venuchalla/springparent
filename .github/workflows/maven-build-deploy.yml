@@ -25,6 +25,6 @@ jobs:
           settings-path: ${{ github.workspace }}
 
       - name: Build & Deploy
-        run: mvn clean deploy
+        run: mvn -X clean deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
