@@ -24,8 +24,11 @@ jobs:
           server-id: github
 
 
-      - name: Show settings.xml
-        run: cat ~/.m2/settings.xml
+      #- name: Show settings.xml
+        #run: cat ~/.m2/settings.xml
+
+      - name: Build Spring Boot Executable JAR
+        run: mvn clean package
 
       - name: Build & Deploy
         run: mvn -X clean deploy
