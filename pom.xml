@@ -204,24 +204,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <annotationProcessorPaths>
-            <path>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
-              <version>${lombok.version}</version>
-            </path>
-            <path>
-              <groupId>org.mapstruct</groupId>
-              <artifactId>mapstruct-processor</artifactId>
-              <version>${mapstruct.version}</version>
-            </path>
-          </annotationProcessorPaths>
-        </configuration>
-      </plugin>
-      <plugin>
         <!-- Source: https://mvnrepository.com/artifact/com.diffplug.spotless/spotless-maven-plugin -->
         <!-- spotify fmt formatting plugin is also available -->
         <groupId>com.diffplug.spotless</groupId>
@@ -287,7 +269,6 @@
               <skipAddTestSourceIfMissing>true</skipAddTestSourceIfMissing>
               <sources>
                 <source>${project.basedir}/src/main/java</source>
-                <!--                <source>${project.basedir}/src/main/resources/swagger/code-gen/generated-sources</source>-->
               </sources>
             </configuration>
           </execution>
@@ -370,5 +351,41 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>generate-clients</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.4.1</version>
+            <configuration>
+              <mainClass>com.example.springutil.codegen.CodegenTool</mainClass>
+              <classpathScope>compile</classpathScope>
+              <arguments>
+                <argument>${project.basedir}</argument>
+                <argument>${project.basedir}/src/main/resources/swagger</argument>
+                <argument>${project.basedir}/src/main/resources/swagger/code-gen/code-gen.properties</argument>
+                <argument>${project.basedir}/src/main/resources/swagger/templates</argument>
+              </arguments>
+            </configuration>
+            <executions>
+              <execution>
+                <id>generate-clients</id>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <phase>generate-sources</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>
