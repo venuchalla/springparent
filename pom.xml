@@ -262,13 +262,13 @@
           <execution>
             <id>add-clients-source</id>
             <goals>
-              <goal>add-test-source</goal>
+              <goal>add-source</goal>
             </goals>
-            <phase>generate-test-resources</phase>
+            <phase>generate-resources</phase>
             <configuration>
-              <skipAddTestSourceIfMissing>true</skipAddTestSourceIfMissing>
+              <skipAddSource>false</skipAddSource>
               <sources>
-                <source>${project.basedir}/src/main/java</source>
+                <source>${project.basedir}/generated-source</source>
               </sources>
             </configuration>
           </execution>
