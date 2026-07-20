@@ -428,6 +428,43 @@
       <!--          </execution>-->
       <!--        </executions>-->
       <!--      </plugin>-->
+
+<!--      <plugin>-->
+<!--        <groupId>org.codehaus.mojo</groupId>-->
+<!--        <artifactId>build-helper-maven-plugin</artifactId>-->
+<!--        <version>3.6.1</version>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <id>add-clients-source</id>-->
+<!--            <goals>-->
+<!--              <goal>add-test-source</goal>-->
+<!--            </goals>-->
+<!--            <phase>generate-test-resources</phase>-->
+<!--            <configuration>-->
+<!--              <skipAddTestSourceIfMissing>true</skipAddTestSourceIfMissing>-->
+<!--              <sources>-->
+<!--                <source>${project.basedir}/generated-source/src/main/java</source>-->
+<!--              </sources>-->
+<!--            </configuration>-->
+<!--          </execution>-->
+<!--          <execution>-->
+<!--            <id>attach-lombok-config</id>-->
+<!--            <goals>-->
+<!--              <goal>attach-artifact</goal>-->
+<!--            </goals>-->
+<!--            <phase>package</phase>-->
+<!--            <configuration>-->
+<!--              <artifacts>-->
+<!--                <artifact>-->
+<!--                  <file>${project.basedir}/src/main/java/lombok.config</file>-->
+<!--                  <type>lombok-config</type>-->
+<!--                  <classifier>lombok</classifier>-->
+<!--                </artifact>-->
+<!--              </artifacts>-->
+<!--            </configuration>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--      </plugin>-->
     </plugins>
   </build>
 </project>
