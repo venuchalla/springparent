@@ -42,7 +42,7 @@
   <properties>
     <java.version>19</java.version>
     <spring-cloud.version>2025.0.0</spring-cloud.version>
-    <mapstruct.version>1.6.3</mapstruct.version>
+    <!--    <mapstruct.version>1.6.3</mapstruct.version>-->
     <lombok.version>1.18.36</lombok.version>
     <spring-webflux-version>3.5.3</spring-webflux-version>
     <spring-boot-data-jpa-version>3.5.3</spring-boot-data-jpa-version>
@@ -50,6 +50,8 @@
     <commons-lang3.version>3.18.0</commons-lang3.version>
     <spring-cloud-starter-circuitbreaker-resilience4j-version>3.3.1</spring-cloud-starter-circuitbreaker-resilience4j-version>
     <openapi-generator.version>7.23.0</openapi-generator.version>
+    <generated-source-dir>${project.build.directory}/generated-source</generated-source-dir>
+    <mapstruct.version>1.6.3</mapstruct.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -191,6 +193,12 @@
       <version>${mapstruct.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct-processor</artifactId>
+      <version>${mapstruct.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.openapitools</groupId>
       <artifactId>openapi-generator</artifactId>
       <exclusions>
@@ -253,22 +261,60 @@
           </execution>
         </executions>
       </plugin>
-
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.14.1</version>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.mapstruct</groupId>
+              <artifactId>mapstruct-processor</artifactId>
+              <version>${mapstruct.version}</version>
+            </path>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${lombok.version}</version>
+            </path>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok-mapstruct-binding</artifactId>
+              <version>0.2.0</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
         <version>3.6.1</version>
         <executions>
+          <!--          <execution>-->
+          <!--            <id>add-source</id>-->
+          <!--            <goals>-->
+          <!--              <goal>add-source</goal>-->
+          <!--            </goals>-->
+          <!--            <phase>generate-resources</phase>-->
+          <!--            <configuration>-->
+          <!--              <skipAddSource>false</skipAddSource>-->
+          <!--              <sources>-->
+          <!--                <source>${project.basedir}/generated-source</source>-->
+          <!--              </sources>-->
+          <!--            </configuration>-->
+          <!--          </execution>-->
           <execution>
-            <id>add-clients-source</id>
+            <id>add-source</id>
             <goals>
               <goal>add-source</goal>
             </goals>
-            <phase>generate-resources</phase>
+            <phase>process-sources</phase>
             <configuration>
-              <skipAddSource>false</skipAddSource>
+              <skipAddSourceIfMissing>true</skipAddSourceIfMissing>
               <sources>
-                <source>${project.basedir}/generated-source</source>
+                <source>${generated-source-dir}/src/main/java</source>
               </sources>
             </configuration>
           </execution>
@@ -349,43 +395,39 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>deploy</id>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+            <phase>deploy</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <!--      <plugin>-->
+      <!--        <groupId>org.springframework.boot</groupId>-->
+      <!--        <artifactId>spring-boot-maven-plugin</artifactId>-->
+      <!--        <configuration>-->
+      <!--          <excludes>-->
+      <!--            <exclude>-->
+      <!--              <groupId>org.projectlombok</groupId>-->
+      <!--              <artifactId>lombok</artifactId>-->
+      <!--            </exclude>-->
+      <!--          </excludes>-->
+      <!--        </configuration>-->
+      <!--        <executions>-->
+      <!--          <execution>-->
+      <!--            <goals>-->
+      <!--              <goal>build-info</goal>-->
+      <!--            </goals>-->
+      <!--          </execution>-->
+      <!--        </executions>-->
+      <!--      </plugin>-->
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>generate-clients</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>3.4.1</version>
-            <configuration>
-              <mainClass>com.example.springutil.codegen.CodegenTool</mainClass>
-              <classpathScope>compile</classpathScope>
-              <arguments>
-                <argument>${project.basedir}</argument>
-                <argument>${project.basedir}/src/main/resources/swagger</argument>
-                <argument>${project.basedir}/src/main/resources/swagger/code-gen/code-gen.properties</argument>
-                <argument>${project.basedir}/src/main/resources/swagger/templates</argument>
-              </arguments>
-            </configuration>
-            <executions>
-              <execution>
-                <id>generate-clients</id>
-                <goals>
-                  <goal>java</goal>
-                </goals>
-                <phase>generate-sources</phase>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
 </project>
