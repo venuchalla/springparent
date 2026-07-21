@@ -22,10 +22,9 @@
     <developer/>
   </developers>
   <scm>
-    <connection/>
-    <developerConnection/>
-    <tag/>
-    <url/>
+    <connection>scm:git:https://github.com/venuchalla/springparent.git</connection>
+    <developerConnection>scm:git:https://github.com/venuchalla/springparent.git</developerConnection>
+    <url>https://github.com/venuchalla/springparent</url>
   </scm>
   <distributionManagement>
     <repository>
@@ -292,6 +291,19 @@
         <artifactId>build-helper-maven-plugin</artifactId>
         <version>3.6.1</version>
         <executions>
+          <execution>
+            <id>add-clients-source</id>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <phase>generate-test-resources</phase>
+            <configuration>
+              <skipAddTestSourceIfMissing>true</skipAddTestSourceIfMissing>
+              <sources>
+                <source>${project.basedir}/generated-source/src/main/java</source>
+              </sources>
+            </configuration>
+          </execution>
           <!--          <execution>-->
           <!--            <id>add-source</id>-->
           <!--            <goals>-->
@@ -318,6 +330,23 @@
               </sources>
             </configuration>
           </execution>
+          <!--          <execution>-->
+          <!--            <id>attach-lombok-config</id>-->
+          <!--            <goals>-->
+          <!--              <goal>attach-artifact</goal>-->
+          <!--            </goals>-->
+          <!--            <phase>package</phase>-->
+          <!--            <configuration>-->
+          <!--              <artifacts>-->
+          <!--                <artifact>-->
+          <!--                  <file>${project.basedir}/src/main/java/lombokm.config</file>-->
+          <!--                  <type>lombok-config</type>-->
+          <!--                  <classifier>lombok</classifier>-->
+          <!--                </artifact>-->
+          <!--              </artifacts>-->
+          <!--            </configuration>-->
+          <!--          </execution>-->
+
         </executions>
       </plugin>
       <plugin>
@@ -382,7 +411,7 @@
           <dateFormat>dd MMM yyyy HH:mm:ss Z</dateFormat>
           <abbrevLength>7</abbrevLength>
           <verbose>false</verbose>
-          <generateGitPropertiesFile>false</generateGitPropertiesFile>
+          <generateGitPropertiesFile>true</generateGitPropertiesFile>
           <failOnNoGitDirectory>false</failOnNoGitDirectory>
         </configuration>
         <executions>
@@ -398,7 +427,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.1.3</version>
         <executions>
           <execution>
             <id>deploy</id>
@@ -428,43 +457,61 @@
       <!--          </execution>-->
       <!--        </executions>-->
       <!--      </plugin>-->
-
+      <!-- 1. Git Commit Information -->
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.6.1</version>
+        <groupId>io.github.git-commit-id</groupId>
+        <artifactId>git-commit-id-maven-plugin</artifactId>
+        <version>9.0.1</version>
+
         <executions>
           <execution>
-            <id>add-clients-source</id>
             <goals>
-              <goal>add-test-source</goal>
+              <goal>revision</goal>
             </goals>
-            <phase>generate-test-resources</phase>
-            <configuration>
-              <skipAddTestSourceIfMissing>true</skipAddTestSourceIfMissing>
-              <sources>
-                <source>${project.basedir}/generated-source/src/main/java</source>
-              </sources>
-            </configuration>
           </execution>
-          <!--          <execution>-->
-          <!--            <id>attach-lombok-config</id>-->
-          <!--            <goals>-->
-          <!--              <goal>attach-artifact</goal>-->
-          <!--            </goals>-->
-          <!--            <phase>package</phase>-->
-          <!--            <configuration>-->
-          <!--              <artifacts>-->
-          <!--                <artifact>-->
-          <!--                  <file>${project.basedir}/src/main/java/lombokm.config</file>-->
-          <!--                  <type>lombok-config</type>-->
-          <!--                  <classifier>lombok</classifier>-->
-          <!--                </artifact>-->
-          <!--              </artifacts>-->
-          <!--            </configuration>-->
-          <!--          </execution>-->
         </executions>
       </plugin>
+
+      <!-- 2. Generate Build Number -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>3.2.1</version>
+
+        <configuration>
+          <doCheck>false</doCheck>
+          <doUpdate>false</doUpdate>
+        </configuration>
+
+        <executions>
+          <execution>
+            <goals>
+              <goal>create</goal>
+            </goals>
+            <phase>validate</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- 3. Maven Release -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>3.1.1</version>
+
+        <configuration>
+          <tagNameFormat>v@{project.version}</tagNameFormat>
+        </configuration>
+      </plugin>
+
+      <!-- 5. Version Management -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <version>2.19.0</version>
+      </plugin>
+
     </plugins>
+
   </build>
 </project>
