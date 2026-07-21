@@ -33,7 +33,7 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config user.name "venuchalla"
+          git config user.name "venu challa"
           git config user.email "venuchalla1993@gmail.com"
 
 
