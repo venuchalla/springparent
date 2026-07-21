@@ -458,6 +458,7 @@
       <!--        </executions>-->
       <!--      </plugin>-->
       <!-- 1. Git Commit Information -->
+
       <plugin>
         <groupId>io.github.git-commit-id</groupId>
         <artifactId>git-commit-id-maven-plugin</artifactId>
